@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karibu Restaurant | Ordering System</title>
+    <style>
+        :root {
+            --primary: #0ea5e9;
+            --secondary: #d946ef;
+            --success: #22c55e;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: var(--card-bg);
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        header h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 1.5rem;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* Menu Section */
+        .menu-section h2 {
+            color: var(--secondary);
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+        }
+
+        .menu-card h3 {
+            margin: 0 0 0.5rem 0;
+            color: var(--text-main);
+        }
+
+        .menu-card p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            flex-grow: 1;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background-color: #0284c7;
+        }
+
+        /* Cart Section */
+        .cart-panel {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            height: fit-content;
+            position: sticky;
+            top: 2rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 0.75rem 0;
+            font-size: 0.95rem;
+        }
+
+        .cart-totals {
+            margin-top: 1.5rem;
+        }
+
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .grand-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--success);
+            border-top: 2px solid #e2e8f0;
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            background-color: var(--success);
+            padding: 1rem;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+        }
+
+        .checkout-btn:hover {
+            background-color: #16a34a;
+        }
+
+        /* Form Inputs */
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.25rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍽️ Karibu Restaurant</h1>
+        <div>Table Order System</div>
+    </header>
+
+    <div class="container">
+        <div class="menu-section">
+            <h2>Mains & Starters</h2>
+            <div class="menu-grid" id="menu-container">
+                </div>
+        </div>
+
+        <div class="cart-panel">
+            <h2 style="margin-top: 0;">🛒 Current Order</h2>
+            
+            <div class="form-group">
+                <label>Customer Name</label>
+                <input type="text" id="customer-name" placeholder="e.g., John Doe">
+            </div>
+            <div class="form-group">
+                <label>Table Number</label>
+                <input type="number" id="table-number" min="1" max="20" placeholder="1-20">
+            </div>
+
+            <div id="cart-items-container">
+                </div>
+
+            <div class="cart-totals">
+                <div class="totals-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">KSh 0</span>
+                </div>
+                <div class="totals-row">
+                    <span>VAT (16%):</span>
+                    <span id="vat">KSh 0</span>
+                </div>
+                <div class="totals-row">
+                    <span>Service Charge (10%):</span>
+                    <span id="service">KSh 0</span>
+                </div>
+                <div class="grand-total">
+                    <span>TOTAL:</span>
+                    <span id="total">KSh 0</span>
+                </div>
+            </div>
+
+            <button class="checkout-btn" onclick="placeOrder()">Confirm Order</button>
+        </div>
+    </div>
+
+    <script>
+        // Mirroring your C++ Data Structure
+        const menu = [
+            { id: 1, name: "Samosa (2 pcs)", category: "Starters", price: 250, description: "Crispy pastry with spiced minced meat" },
+            { id: 5, name: "Nyama Choma (500g)", category: "Mains", price: 1200, description: "Char-grilled beef, kachumbari" },
+            { id: 6, name: "Grilled Tilapia", category: "Mains", price: 900, description: "Whole tilapia, chips & salad" },
+            { id: 7, name: "Chicken Biryani", category: "Mains", price: 850, description: "Fragrant basmati, spiced chicken" },
+            { id: 10, name: "Chocolate Lava Cake", category: "Desserts", price: 550, description: "Warm, gooey center, vanilla ice cream" },
+            { id: 13, name: "Fresh Juice", category: "Drinks", price: 200, description: "Mango, Orange, Passion or Watermelon" },
+            { id: 17, name: "Masala Chai", category: "Drinks", price: 180, description: "Spiced tea, full cream milk" }
+        ];
+
+        let cart = [];
+
+        // Initialize Menu
+        function renderMenu() {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = '';
+
+            menu.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'menu-card';
+                card.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>${item.description}</p>
+                    <div class="price-row">
+                        <span>KSh ${item.price}</span>
+                        <button onclick="addToCart(${item.id})">+ Add</button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Cart Logic
+        function addToCart(itemId) {
+            const item = menu.find(m => m.id === itemId);
+            const existingItem = cart.find(c => c.id === itemId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...item, quantity: 1 });
+            }
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cart-items-container');
+            container.innerHTML = '';
+
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                const itemSubtotal = item.price * item.quantity;
+                subtotal += itemSubtotal;
+
+                container.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.quantity}x ${item.name}</span>
+                        <span>KSh ${itemSubtotal}</span>
+                    </div>
+                `;
+            });
+
+            if (cart.length === 0) {
+                container.innerHTML = '<div class="cart-item" style="color: #64748b;">Cart is empty</div>';
+            }
+
+            // Calculate exact matches to your C++ logic
+            const vat = subtotal * 0.16;
+            const service = subtotal * 0.10;
+            const total = subtotal + vat + service;
+
+            // Update UI
+            document.getElementById('subtotal').innerText = `KSh ${subtotal.toFixed(0)}`;
+            document.getElementById('vat').innerText = `KSh ${vat.toFixed(0)}`;
+            document.getElementById('service').innerText = `KSh ${service.toFixed(0)}`;
+            document.getElementById('total').innerText = `KSh ${total.toFixed(0)}`;
+        }
+
+        function placeOrder() {
+            const name = document.getElementById('customer-name').value;
+            const table = document.getElementById('table-number').value;
+
+            if (cart.length === 0) {
+                alert("Please add items to your order first.");
+                return;
+            }
+            if (!name || !table) {
+                alert("Please enter Customer Name and Table Number.");
+                return;
+            }
+
+            alert(`✅ Order Confirmed for ${name} at Table ${table}!\nEstimated wait: ~25 minutes.`);
+            
+            // Reset Cart
+            cart = [];
+            document.getElementById('customer-name').value = '';
+            document.getElementById('table-number').value = '';
+            updateCart();
+        }
+
+        // Run on load
+        renderMenu();
+        updateCart();
+    </script>
+</body>
+</html>
