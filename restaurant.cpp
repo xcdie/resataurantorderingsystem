@@ -57,12 +57,12 @@ enum class OrderStatus {
 
 string statusToString(OrderStatus s) {
     switch(s) {
-        case OrderStatus::PENDING:    return "⏳ PENDING";
-        case OrderStatus::CONFIRMED:  return "✅ CONFIRMED";
-        case OrderStatus::PREPARING:  return "🍳 PREPARING";
-        case OrderStatus::READY:      return "🔔 READY";
-        case OrderStatus::SERVED:     return "🍽  SERVED";
-        case OrderStatus::CANCELLED:  return "❌ CANCELLED";
+        case OrderStatus::PENDING:    return " PENDING";
+        case OrderStatus::CONFIRMED:  return " CONFIRMED";
+        case OrderStatus::PREPARING:  return " PREPARING";
+        case OrderStatus::READY:      return " READY";
+        case OrderStatus::SERVED:     return "  SERVED";
+        case OrderStatus::CANCELLED:  return " CANCELLED";
         default: return "UNKNOWN";
     }
 }
@@ -171,7 +171,7 @@ void initMenu() {
 // ─── Display Menu ─────────────────────────────────────────────
 
 void displayMenu(const string& filterCategory = "") {
-    printHeader("📋  OUR MENU");
+    printHeader("  OUR MENU");
 
     vector<string> categories;
     for (auto& item : menu) {
@@ -204,7 +204,7 @@ void displayMenu(const string& filterCategory = "") {
 // ─── Customer: Place New Order ────────────────────────────────
 
 void placeOrder() {
-    printHeader("🛒  PLACE NEW ORDER");
+    printHeader("  PLACE NEW ORDER");
 
     string name;
     cout << YELLOW << "  Customer Name: " << RESET;
@@ -314,7 +314,7 @@ void placeOrder() {
 // ─── View Order Status ────────────────────────────────────────
 
 void viewOrderStatus() {
-    printHeader("📦  ORDER STATUS");
+    printHeader("  ORDER STATUS");
 
     if (orders.empty()) {
         cout << YELLOW << "  No orders yet.\n" << RESET;
@@ -353,7 +353,7 @@ void viewOrderStatus() {
 // ─── Print Bill / Receipt ─────────────────────────────────────
 
 void printBill() {
-    printHeader("🧾  PRINT BILL");
+    printHeader("  PRINT BILL");
 
     cout << YELLOW << "  Enter Order ID: " << RESET;
     int id;
@@ -373,7 +373,7 @@ void printBill() {
 
     cout << "\n";
     printLine('═');
-    cout << BOLD << setw(38) << "🍽  KARIBU RESTAURANT\n" << RESET;
+    cout << BOLD << setw(38) << "  KARIBU RESTAURANT\n" << RESET;
     cout << setw(40) << "Nairobi, Kenya | +254 700 000 000\n";
     cout << setw(38) << "www.kariburestaurant.co.ke\n";
     printLine('═');
@@ -408,7 +408,7 @@ void printBill() {
          << RESET << "\n";
     printLine('═');
     cout << "\n" << setw(40) << "Thank you for dining with us!\n";
-    cout << setw(36) << "Asante sana! 🙏\n\n";
+    cout << setw(36) << "Asante sana! \n\n";
 
     if (target->status != OrderStatus::SERVED)
         target->status = OrderStatus::SERVED;
@@ -419,7 +419,7 @@ void printBill() {
 // ─── Admin Panel ──────────────────────────────────────────────
 
 void updateOrderStatus() {
-    printHeader("🔄  UPDATE ORDER STATUS");
+    printHeader("  UPDATE ORDER STATUS");
 
     cout << YELLOW << "  Enter Order ID: " << RESET;
     int id; cin >> id; cin.ignore();
@@ -443,7 +443,7 @@ void updateOrderStatus() {
 }
 
 void adminAddMenuItem() {
-    printHeader("➕  ADD MENU ITEM");
+    printHeader("  ADD MENU ITEM");
 
     MenuItem item;
     item.id        = nextMenuId++;
@@ -463,7 +463,7 @@ void adminAddMenuItem() {
 }
 
 void adminToggleAvailability() {
-    printHeader("🔀  TOGGLE ITEM AVAILABILITY");
+    printHeader("  TOGGLE ITEM AVAILABILITY");
     displayMenu();
     int id = getIntInput("  Enter Item ID: ", 1, nextMenuId);
     for (auto& item : menu) {
@@ -482,7 +482,7 @@ void adminToggleAvailability() {
 }
 
 void adminSalesReport() {
-    printHeader("📊  SALES REPORT");
+    printHeader("  SALES REPORT");
 
     if (orders.empty()) {
         cout << YELLOW << "  No orders to report.\n" << RESET;
@@ -526,7 +526,7 @@ void adminSalesReport() {
 }
 
 void adminPanel() {
-    printHeader("🔐  ADMIN LOGIN");
+    printHeader("  ADMIN LOGIN");
     cout << YELLOW << "  Enter Admin PIN: " << RESET;
     string pin;
     cin >> pin;
@@ -539,7 +539,7 @@ void adminPanel() {
     }
 
     while (true) {
-        printHeader("⚙️   ADMIN PANEL");
+        printHeader("   ADMIN PANEL");
         cout << "  1. Update Order Status\n"
                 "  2. Add Menu Item\n"
                 "  3. Toggle Item Availability\n"
@@ -555,7 +555,7 @@ void adminPanel() {
             case 3: adminToggleAvailability(); break;
             case 4: adminSalesReport();    break;
             case 5: {
-                printHeader("📋  ALL ORDERS");
+                printHeader("  ALL ORDERS");
                 if (orders.empty()) { cout << YELLOW << "  No orders.\n" << RESET; pressEnter(); break; }
                 for (auto& o : orders) {
                     cout << "  #" << o.id << " | Table " << o.tableNumber
@@ -576,16 +576,16 @@ void adminPanel() {
 
 void mainMenu() {
     while (true) {
-        printHeader("🍽   KARIBU RESTAURANT — ORDERING SYSTEM");
+        printHeader("  KARIBU RESTAURANT — ORDERING SYSTEM");
 
         cout << BOLD << CYAN
              << "  Welcome! Please select an option:\n\n" << RESET;
-        cout << "  " << CYAN << "1" << RESET << "  📋  View Menu\n";
-        cout << "  " << CYAN << "2" << RESET << "  🛒  Place Order\n";
-        cout << "  " << CYAN << "3" << RESET << "  📦  Check Order Status\n";
-        cout << "  " << CYAN << "4" << RESET << "  🧾  Print Bill\n";
-        cout << "  " << CYAN << "5" << RESET << "  ⚙️   Admin Panel\n";
-        cout << "  " << CYAN << "0" << RESET << "  🚪  Exit\n\n";
+        cout << "  " << CYAN << "1" << RESET << "    View Menu\n";
+        cout << "  " << CYAN << "2" << RESET << "    Place Order\n";
+        cout << "  " << CYAN << "3" << RESET << "    Check Order Status\n";
+        cout << "  " << CYAN << "4" << RESET << "    Print Bill\n";
+        cout << "  " << CYAN << "5" << RESET << "    Admin Panel\n";
+        cout << "  " << CYAN << "0" << RESET << "    Exit\n\n";
 
         int choice = getIntInput("  Enter choice: ", 0, 5);
 
